@@ -13,7 +13,7 @@ const Plane = () => {
     <>
       <mesh ref={meshRef}>
         <planeGeometry args={[2, 2, 20, 20]} />
-        <meshBasicMaterial />
+        <MaterialShader />
       </mesh>
     </>
   );
