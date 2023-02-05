@@ -26,6 +26,11 @@ const Fixed_Position = styled.div`
   justify-content: center;
   align-items: center;
   //-- flex conf --
+  filter: url(#f);
+
+  width: 1000px;
+  height: 100vh;
+  overflow: auto;
 
   /* clip-path: polygon(0 10%, 100% 10%, 100% 90%, 0 90%); */
 `;
@@ -50,6 +55,11 @@ const MainBody_flex = styled.div`
 const About = () => {
   const mainRef = useRef();
 
+  React.useEffect(() => {
+    console.log('width', window.innerWidth);
+    console.log('height', window.innerHeight);
+  }, []);
+
   return (
     <>
       <Fixed_Position>
@@ -67,6 +77,8 @@ const About = () => {
 
 const Section = styled.section`
   background-color: ${(props) => props.background};
+  font-size: 32px;
+  line-height: 40px;
   color: rgb(251, 249, 252);
   width: 100%;
   height: 100vh;
@@ -98,6 +110,11 @@ const SectionDetail = ({ indexkey }) => {
   return (
     <Section ref={sectionRef} background={colorsSection[indexkey]}>
       <InsideSection ref={insideSectionRef}>
+        <img
+          style={{ width: '500px', height: '300px' }}
+          src="src/images/tiger.jpg"
+          alt="displacement-map"
+        />
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsam modi
         fuga placeat fugit illum! Deleniti nisi minima rerum beatae distinctio
         incidunt atque sed, hic culpa ipsa magnam recusandae totam dignissimos
