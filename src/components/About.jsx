@@ -56,8 +56,8 @@ const About = () => {
   const mainRef = useRef();
 
   React.useEffect(() => {
-    console.log('width', window.innerWidth);
-    console.log('height', window.innerHeight);
+    // console.log('width', window.innerWidth);
+    // console.log('height', window.innerHeight);
   }, []);
 
   return (
