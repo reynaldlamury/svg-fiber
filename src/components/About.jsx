@@ -53,8 +53,8 @@ const About = () => {
     <>
       <Fixed_Position>
         <MainBody_flex ref={mainRef}>
-          {Array(9)
-            .fill(9)
+          {Array(100)
+            .fill(100)
             .map((num, i) => (
               <SectionDetail key={i} indexkey={i} />
             ))}
