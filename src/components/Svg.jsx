@@ -57,14 +57,17 @@ const Svg = () => {
   const svgHeightRef = useRef({ value: 500 })
 
   useEffect(() => {
-    let scrollEndTimer;
     const wheelTimer = () => {
       setIsWheeling(true)
 
-      clearTimeout(scrollEndTimer)
-      scrollEndTimer = setTimeout(() => {
+      const timeout = setTimeout(() => {
+      // setTimeout(() => {
         setIsWheeling(false)
-      }, 100)
+      }, 500)
+
+      return () => {
+        clearTimeout(timeout)
+      }
     }
 
     window.addEventListener('wheel', wheelTimer)
@@ -72,21 +75,20 @@ const Svg = () => {
   }, [])
 
   useEffect(() => {
-    console.log('deltaY', deltaY)
-
-    if (isWheeling) {
-      gsap.to(svgHeightRef.current, {
-        value: 200,
-        duration: 0.3 
+    // console.log('deltaY', deltaY)
+    if (deltaY > 0) {
+        gsap.to(svgHeightRef.current, {
+          value: 200,
+          duration: 0.5 
       })
     } else {
       gsap.to(svgHeightRef.current, {
         value: 500,
-        duration: 0.3 
+        duration: 4 
       })
     }
 
-  }, [isWheeling])
+  }, [deltaY])
 
   return (
     <>
