@@ -50,7 +50,7 @@ const SectionDetail = ({ indexkey }) => {
       <InsideSection ref={insideSectionRef}>
         <img
           style={{ width: '500px', height: '300px' }}
-          src="src/images/tiger.jpg"
+          src="src/images/css.jpg"
           alt="displacement-map"
         />
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsam modi
