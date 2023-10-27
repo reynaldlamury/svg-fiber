@@ -3,14 +3,15 @@ import { useControls } from 'leva';
 import useDeltaY from './useDeltaY';
 import gsap from 'gsap';
 import useLerp from './useLerp';
+import { useStateValue } from '../StateProvider';
 
 const Svg = () => {
-  const [deltaY, scrollMode] = useDeltaY();
-  const [speed2] = useLerp() 
-  const [isWheeling, setIsWheeling] = useState(false);
+  // const [deltaY, scrollMode] = useDeltaY();
+  const [speed2] = useLerp();
 
   const feImageRef = useRef();
   const svgRef = useRef();
+  const [{ scrollMode }, dispatch] = useStateValue();
 
   const {
     svgWidth,
@@ -24,7 +25,7 @@ const Svg = () => {
     scale,
     rotate,
     svgAreaHeight,
-    svgAreaWidth
+    svgAreaWidth,
   } = useControls({
     svgWidth: { value: 1000, min: -1500, max: 1500, step: 2, lock: true },
     svgHeight: { value: 200, min: 200, max: 500, step: 2, lock: true },
@@ -54,46 +55,28 @@ const Svg = () => {
     svgAreaWidth: { value: 1000, min: -2000, max: 2000, step: 10, lock: true },
   });
 
-  const svgHeightRef = useRef({ value: 500 })
+  const svgHeightRef = useRef({ value: 500 });
 
   useEffect(() => {
-    const wheelTimer = () => {
-      setIsWheeling(true)
-
-      const timeout = setTimeout(() => {
-      // setTimeout(() => {
-        setIsWheeling(false)
-      }, 500)
-
-      return () => {
-        clearTimeout(timeout)
-      }
-    }
-
-    window.addEventListener('wheel', wheelTimer)
-    return () => window.removeEventListener('wheel', wheelTimer)
-  }, [])
-
-  useEffect(() => {
-    // console.log('deltaY', deltaY)
-    if (deltaY > 0) {
-        gsap.to(svgHeightRef.current, {
-          value: 200,
-          duration: 0.5 
-      })
+    // console.log('scrollMode', scrollMode);
+    // console.log('speed2', speed2);
+    if (scrollMode && speed2) {
+      gsap.to(svgHeightRef.current, {
+        value: 200,
+        duration: 0.2,
+      });
     } else {
       gsap.to(svgHeightRef.current, {
         value: 500,
-        duration: 4 
-      })
+        duration: 5,
+      });
     }
-
-  }, [deltaY])
+  }, [scrollMode, speed2]); //);
 
   return (
     <>
       <svg
-        xmlns="http://www.w3.org/2000/svg"
+        xmlns='http://www.w3.org/2000/svg'
         ref={svgRef}
         width={`${svgAreaWidth}`}
         height={`${svgAreaHeight}`}
@@ -107,20 +90,20 @@ const Svg = () => {
       >
         <defs>
           {/* <rect id="rectangle" width="1000" height="100" fill="url(#grad1)" /> */}
-          <filter id="f" primitiveUnits="objectBoundingBox">
+          <filter id='f' primitiveUnits='objectBoundingBox'>
             <feImage
               ref={feImageRef}
-              result="pict2"
+              result='pict2'
               xlinkHref={`data:image/svg+xml;charset=UTF-8,%3csvg height="${svgHeightRef.current.value}" width="${svgWidth}%25" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"%3e%3cdefs%3e%3clinearGradient id="grad1" x1="0%25" y1="${y1}%25" x2="0%25" y2="${y2}%25"%3e%3cstop offset="0%25" style="stop-color:rgb(255,0,0);stop-opacity:1" /%3e%3cstop offset="100%25" style="stop-color:rgb(0,0,0);stop-opacity:1" /%3e%3c/linearGradient%3e%3c/defs%3e%3crect id="witness" width="${rectWidth}%25" height="${rectHeight}" fill="url(%23grad1)"%3e%3c/rect%3e%3c/svg%3e`}
             ></feImage>
 
             <feDisplacementMap
               rotate={rotate}
               scale={scale}
-              xChannelSelector="R"
-              yChannelSelector="R"
-              in2="pict2"
-              in="SourceGraphic"
+              xChannelSelector='R'
+              yChannelSelector='R'
+              in2='pict2'
+              in='SourceGraphic'
             />
           </filter>
         </defs>

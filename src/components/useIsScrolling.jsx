@@ -1,18 +1,24 @@
-import * as React from 'react'
+import * as React from 'react';
 
-export const useIsScrolling = () => {
-  const [isScrolling, setIsScrolling] = React.useState(false)
-  const on = React.useCallback(() => setIsScrolling(true), [])
-  const off = React.useCallback(() => setIsScrolling(false), [])
+export const useIsScrolling = (target = document) => {
+  const [isScrolling, setIsScrolling] = React.useState(false);
+  const [scrollValue, setScrollValue] = React.useState(0);
+
+  const on = React.useCallback(() => {
+    setScrollValue(target?.scrollTop);
+    setIsScrolling(true);
+  }, []);
+
+  const off = React.useCallback(() => setIsScrolling(false), []);
+
   React.useEffect(() => {
-    window.addEventListener('scroll', on, { passive: true })
-    window.addEventListener('scrollend', off)
+    target.addEventListener('scroll', on, { passive: true });
+    target.addEventListener('scrollend', off);
     return () => {
-      window.removeEventListener('scroll', on)
-      window.removeEventListener('scrollend', off)
-    }
-  })
+      target && target.removeEventListener('scroll', on);
+      target && target.removeEventListener('scrollend', off);
+    };
+  });
 
-  return isScrolling
-}
-
+  return [isScrolling, scrollValue];
+};

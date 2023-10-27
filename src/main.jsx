@@ -4,6 +4,7 @@ import App from './App';
 import './index.css';
 import { StateProvider } from './StateProvider.jsx';
 import reducer, { initialState } from './reducer';
+import './App.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <StateProvider initialState={initialState} reducer={reducer}>

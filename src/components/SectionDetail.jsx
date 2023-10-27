@@ -1,5 +1,7 @@
+import React from 'react';
 import { useRef } from 'react';
 import styled from 'styled-components';
+import useLerp from './useLerp';
 
 const colorsSection = [
   'yellowgreen',
@@ -14,6 +16,8 @@ const colorsSection = [
 ];
 
 const Section = styled.section`
+  position: sticky;
+  /* top: 0; */
   background-color: ${(props) => props.background};
   font-size: 32px;
   line-height: 40px;
@@ -45,13 +49,22 @@ const SectionDetail = ({ indexkey }) => {
   const insideSectionRef = useRef();
   const sectionRef = useRef();
 
+  const [currentY] = useLerp();
+
+  React.useEffect(() => {
+    sectionRef.current.style.transform = `translate3d(0, ${
+      currentY * 1000
+    }px, 0)`;
+    // console.log('currentY * 1000', currentY * 1000);
+  }, [currentY]);
+
   return (
     <Section ref={sectionRef} background={colorsSection[indexkey]}>
       <InsideSection ref={insideSectionRef}>
         <img
           style={{ width: '500px', height: '300px' }}
-          src="src/images/css.jpg"
-          alt="displacement-map"
+          src='src/images/css.jpg'
+          alt='displacement-map'
         />
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsam modi
         fuga placeat fugit illum! Deleniti nisi minima rerum beatae distinctio

@@ -1,6 +1,9 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 import SectionDetail from './SectionDetail';
+import { useIsScrolling } from './useIsScrolling';
+import { useStateValue } from '../StateProvider';
+import useLerp from './useLerp';
 
 const Fixed_Position = styled.div`
   background-color: rgb(59, 230, 173);
@@ -42,23 +45,47 @@ const MainBody_flex = styled.div`
 `;
 
 const About = () => {
-  const mainRef = useRef();
+  // const mainRef = useRef();
+  const fixed_positionRef = useRef();
+  // ------------------------------ reducer ------------------------------- //
+  const [states, dispatch] = useStateValue();
+  // ------------------------------ reducer ------------------------------- //
+  //
+
+  // React.useEffect(() => {
+  // console.log('width', window.innerWidth);
+  // console.log('height', window.innerHeight);
+  // }, []);
+
+  const [isScrolling, scrollValue] = useIsScrolling(fixed_positionRef.current);
 
   React.useEffect(() => {
-    // console.log('width', window.innerWidth);
-    // console.log('height', window.innerHeight);
-  }, []);
+    // console.log('scrollValue', scrollValue);
+
+    if (!isScrolling) {
+      // console.log('no scrolling anymore !!!');
+      dispatch({
+        type: 'GET_SCROLLMODE',
+        value: isScrolling,
+      });
+    } else {
+      dispatch({
+        type: 'GET_SCROLLMODE',
+        value: isScrolling,
+      });
+    }
+  }, [scrollValue, isScrolling]);
 
   return (
     <>
-      <Fixed_Position>
-        <MainBody_flex ref={mainRef}>
-          {Array(100)
-            .fill(100)
-            .map((num, i) => (
-              <SectionDetail key={i} indexkey={i} />
-            ))}
-        </MainBody_flex>
+      <Fixed_Position ref={fixed_positionRef}>
+        {/* <MainBody_flex ref={mainRef}> */}
+        {Array(100)
+          .fill(100)
+          .map((num, i) => (
+            <SectionDetail key={i} indexkey={i} />
+          ))}
+        {/* </MainBody_flex> */}
       </Fixed_Position>
     </>
   );
