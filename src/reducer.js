@@ -2,6 +2,7 @@ export const initialState = {
   // attractMode: false,
   deltaY: 0,
   scrollMode: false,
+  currentYvalue: 0,
 };
 
 const reducer = (state, action) => {
@@ -23,6 +24,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         scrollMode: action.value,
+      };
+
+    case 'GET_CURRENTY':
+      return {
+        ...state,
+        currentYvalue: action.value,
       };
 
     default:

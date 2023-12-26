@@ -34,7 +34,7 @@ const useLerp = (target = document) => {
   useEffect(() => {
     const getScroll = () => {
       setTargetY(target?.scrollTop);
-      console.log(`${target}.scrollTop', ${target?.scrollTop}`);
+      // console.log(`${target}.scrollTop', ${target?.scrollTop}`);
       // console.log('window.scrollY', window.scrollY);
 
       // dispatch({
@@ -80,7 +80,7 @@ const useLerp = (target = document) => {
     setCurrentY(lerpFn(currentY, targetY, 0.075));
     // setPosition((prevPos) => (prevPos += speed));
     // setSpeed((prevSpeed) => (prevSpeed *= 0.9));
-    setSpeed2((prevSpeed) => (prevSpeed *= 0.97));
+    setSpeed2((prevSpeed) => (prevSpeed *= 0.9777));
     // setSpeed2((prevSpeed) => (clamp(prevSpeed, 200, 500)));
 
     // console.log(lerpValue);

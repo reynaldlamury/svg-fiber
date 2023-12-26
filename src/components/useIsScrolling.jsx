@@ -7,7 +7,7 @@ export const useIsScrolling = (target = document) => {
   const on = React.useCallback(() => {
     setScrollValue(target?.scrollTop);
     setIsScrolling(true);
-  }, []);
+  }, [target]);
 
   const off = React.useCallback(() => setIsScrolling(false), []);
 

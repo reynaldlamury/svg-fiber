@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRef } from 'react';
 import styled from 'styled-components';
 import useLerp from './useLerp';
+import { useIsScrolling } from './useIsScrolling';
+import { useStateValue } from '../StateProvider';
+import UseInertia from './useInertia';
+import useDeltaY from './useDeltaY';
 
 const colorsSection = [
   'yellowgreen',
@@ -16,56 +20,50 @@ const colorsSection = [
 ];
 
 const Section = styled.section`
-  position: sticky;
+  /* position: sticky; */
   /* top: 0; */
   background-color: ${(props) => props.background};
   font-size: 32px;
   line-height: 40px;
   color: rgb(251, 249, 252);
   width: 100%;
-  height: 100vh;
-  /* padding: 20px; */
-  /* perspective: 7.5rem; */
-  transform-style: preserve-3d;
-
-  //-- flex conf --
-  display: flex;
-  flex-direction: column;
-  /* gap: 10px; */
-  /* justify-content: center; */
-  /* align-items: center; */
-  //-- flex conf --
+  height: 100%;
 `;
 
 const InsideSection = styled.div`
   background-color: rgb(34, 38, 90);
   color: rgb(189, 191, 207);
-  margin: 10px;
   padding: 10px;
-  /* height: 400px; */
+  position: absolute;
+  left: 0;
 `;
 
-const SectionDetail = ({ indexkey }) => {
+const SectionDetail = ({ indexkey, aboutRef }) => {
   const insideSectionRef = useRef();
   const sectionRef = useRef();
 
-  const [currentY] = useLerp();
+  // const currentY = useLerp();
+  const currentY = UseInertia(aboutRef);
+  // const [currentY, scrollValue] = useIsScrolling();
+  const deltaY = useDeltaY(sectionRef.current);
+  const [state, dispatch] = useStateValue();
 
   React.useEffect(() => {
-    sectionRef.current.style.transform = `translate3d(0, ${
-      currentY * 1000
-    }px, 0)`;
+    sectionRef.current.style.transform = `translateY(${-currentY}px)`;
     // console.log('currentY * 1000', currentY * 1000);
   }, [currentY]);
+
+  React.useEffect(() => {
+    dispatch({
+      type: 'GET_DELTAY',
+      value: deltaY,
+    });
+  }, [deltaY]);
 
   return (
     <Section ref={sectionRef} background={colorsSection[indexkey]}>
       <InsideSection ref={insideSectionRef}>
-        <img
-          style={{ width: '500px', height: '300px' }}
-          src='src/images/css.jpg'
-          alt='displacement-map'
-        />
+        <img src='src/images/css.jpg' alt='displacement-map' />
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsam modi
         fuga placeat fugit illum! Deleniti nisi minima rerum beatae distinctio
         incidunt atque sed, hic culpa ipsa magnam recusandae totam dignissimos

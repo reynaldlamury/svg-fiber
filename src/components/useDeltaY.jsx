@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
 
-const useDeltaY = () => {
+const useDeltaY = (target = document) => {
   const [deltaY, setDeltaY] = useState(0);
 
   useEffect(() => {
     function handleWheel(e) {
       setDeltaY(e.deltaY);
     }
-    window.addEventListener('scroll', handleWheel);
-    return () => window.removeEventListener('scroll', handleWheel);
+    target.addEventListener('wheel', handleWheel);
+    return () => {
+      // window.removeEventListener('scroll', handleWheel);
+      target && target.removeEventListener('wheel', handleWheel);
+    };
   }, []);
 
-  return [deltaY];
+  return deltaY;
 };
 
 export default useDeltaY;
